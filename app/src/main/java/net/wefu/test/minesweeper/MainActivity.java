@@ -37,7 +37,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
 
         mGridView = (GridView) findViewById(R.id.grid);
-        mGridView.setNumColumns(Minesweeper.ARRAY_SIZE);
+        mGridView.setNumColumns(Minesweeper.COL_SIZE);
 
         mTvFlagCount = (TextView) findViewById(R.id.tv_flag_count);
         mBtnStart = (ImageButton) findViewById(R.id.btn_start);
@@ -63,9 +63,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mBtnStart.setImageResource(R.drawable.ic_smail);
         mMinesweeper.bombArrange();
 
-        mTvFlagCount.setText(String.valueOf(Minesweeper.ARRAY_SIZE - mMinesweeper.getFlagCount()));
+        mTvFlagCount.setText(String.valueOf(Minesweeper.BOMB_SIZE - mMinesweeper.getFlagCount()));
 
-        for (int i = 0; i < Minesweeper.ARRAY_SIZE * Minesweeper.ARRAY_SIZE; i++) {
+        for (int i = 0; i < Minesweeper.ROW_SIZE * Minesweeper.COL_SIZE; i++) {
             boolean isBomb = mMinesweeper.isBomb(i);
             int bombCount = 0;
             if (!isBomb) {
