@@ -18,6 +18,7 @@ public class Minesweeper {
 
     private ArrayList<Integer> flagList = new ArrayList<>();
     private int selectedCount;
+    private boolean reverse;
 
     public Minesweeper() {
 
@@ -30,8 +31,12 @@ public class Minesweeper {
         Random random = new Random();
         flagList.clear();
         selectedCount = 0;
+        reverse = false;
 
-        for (int i = 0; i < BOMB_SIZE; i++) {
+        int bombSize = ((ROW_SIZE * COL_SIZE) / 2) > BOMB_SIZE ? BOMB_SIZE : (ROW_SIZE * COL_SIZE) - BOMB_SIZE;
+        reverse = bombSize != BOMB_SIZE;
+
+        for (int i = 0; i < bombSize; i++) {
             int randValue;
 
             do {
@@ -63,11 +68,16 @@ public class Minesweeper {
                         continue;
                     }
 
-                    bombArrange[row+j][col+k] ++;
+                    if (reverse) {
+                        int bombIndex = (row + j) * COL_SIZE + (col + k);
+                        if (!bombSet.contains(bombIndex)) {
+                            bombArrange[row][col]++;
+                        }
+                    } else {
+                        bombArrange[row + j][col + k]++;
+                    }
                 }
             }
-
-            bombArrange[row][col] = BOMB_SIZE + 1;
         }
     }
 
@@ -89,7 +99,7 @@ public class Minesweeper {
     }
 
 
-    public void setOpenCellIndex(int row, int col, ArrayList<Integer> cellList) {
+    private void setOpenCellIndex(int row, int col, ArrayList<Integer> cellList) {
         int index = row*COL_SIZE+col;
 
         if (cellList.contains(index) || flagList.contains(index)) {
@@ -121,18 +131,20 @@ public class Minesweeper {
     }
 
     public boolean isBomb(int index) {
-        int row = index / COL_SIZE;
-        int col = index % COL_SIZE;
+        boolean isBomb = true;
+        if (bombMap.get(index) == null) {
+            isBomb =  false;
+        }
 
-        return isBomb(row, col);
+        if (reverse) {
+            return !isBomb;
+        }
+
+        return isBomb;
     }
 
     public boolean isBomb(int row, int col) {
-        if (bombArrange[row][col] > BOMB_SIZE) {
-            return true;
-        }
-
-        return false;
+        return isBomb(row * COL_SIZE + col);
     }
 
     public int getBombCount(int index) {
