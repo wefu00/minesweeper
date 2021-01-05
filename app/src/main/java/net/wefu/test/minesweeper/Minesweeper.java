@@ -6,7 +6,7 @@ import java.util.Random;
 import java.util.Set;
 
 /**
- * Created by wefu on 2017-07-09.
+ * Created by wefu on 2020-07-09.
  */
 public class Minesweeper {
     public static final int ROW_SIZE = 12;
